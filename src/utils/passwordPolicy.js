@@ -57,7 +57,8 @@ export const validatePassword = (password) => {
   }
 
   // Check for special characters
-  if (REQUIRES_SPECIAL && !new RegExp(`[${SPECIAL_CHARS.replace(/[\[\]\\-]/g, '\\$&')}]`).test(password)) {
+  // eslint-disable-next-line no-useless-escape
+  if (REQUIRES_SPECIAL && !new RegExp(`[${SPECIAL_CHARS.replace(/[\[\]\-]/g, '$&')}]`).test(password)) {
     return {
       isValid: false,
       message: 'Password must contain at least one special character'
@@ -88,14 +89,16 @@ export const calculatePasswordStrength = (password) => {
   if (/[A-Z]/.test(password)) score += 10; // Uppercase
   if (/[a-z]/.test(password)) score += 10; // Lowercase
   if (/[0-9]/.test(password)) score += 10; // Numbers
-  if (new RegExp(`[${SPECIAL_CHARS.replace(/[\[\]\\-]/g, '\\$&')}]`).test(password)) score += 15; // Special chars
+  // eslint-disable-next-line no-useless-escape
+  if (new RegExp(`[${SPECIAL_CHARS.replace(/[\[\]\-]/g, '$&')}]`).test(password)) score += 15; // Special chars
   
   // Variety of character types
   const charTypes = [
     /[A-Z]/.test(password),
     /[a-z]/.test(password),
     /[0-9]/.test(password),
-    new RegExp(`[${SPECIAL_CHARS.replace(/[\[\]\\-]/g, '\\$&')}]`).test(password)
+    // eslint-disable-next-line no-useless-escape
+    new RegExp(`[${SPECIAL_CHARS.replace(/[\[\]\-]/g, '$&')}]`).test(password)
   ].filter(Boolean).length;
   
   score += charTypes * 5;
